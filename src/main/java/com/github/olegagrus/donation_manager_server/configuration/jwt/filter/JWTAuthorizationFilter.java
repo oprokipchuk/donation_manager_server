@@ -57,10 +57,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             }
         }
 
-
-        //System.out.println(request.getRequestURI());
-        //Arrays.stream(request.getCookies()).forEach(cookie -> System.out.println(cookie.getName() + " " + cookie.getComment() + " " + cookie.getValue()));
-
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             if (jwtUtil.validateToken(jwt, userDetails)) {
@@ -69,11 +65,9 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                 usernamePasswordAuthenticationToken
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                //filterChain.doFilter(request, response);
             }
         }
 
-        //response.sendError(HttpServletResponse.SC_FORBIDDEN, "bad authorization");
         filterChain.doFilter(request, response);
 
     }
